@@ -42,17 +42,15 @@ public class MongoDBBackupService implements BackupService {
             String backupDirName = String.format("%s_%s_mongodb", config.getDatabaseName(), timestamp);
             String backupDirPath = config.getBackupPath() + File.separator + backupDirName;
 
-            // Build mongodump command
-            String connectionString = String.format("mongodb://%s:%s@%s:%d/%s",
-                    config.getUsername(),
-                    config.getPassword(),
-                    config.getHost(),
-                    config.getPort(),
-                    config.getDatabaseName());
-
+            // Build mongodump command with separate authentication parameters
+            // This is more secure than embedding credentials in the connection string
             ProcessBuilder processBuilder = new ProcessBuilder(
                     "mongodump",
-                    "--uri=" + connectionString,
+                    "--host=" + config.getHost(),
+                    "--port=" + String.valueOf(config.getPort()),
+                    "--username=" + config.getUsername(),
+                    "--password=" + config.getPassword(),
+                    "--db=" + config.getDatabaseName(),
                     "--out=" + backupDirPath
             );
 
@@ -135,18 +133,22 @@ public class MongoDBBackupService implements BackupService {
         return archivePath;
     }
 
-    private void deleteDirectory(File directory) {
+    private void deleteDirectory(File directory) throws Exception {
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
                     deleteDirectory(file);
                 } else {
-                    file.delete();
+                    if (!file.delete()) {
+                        throw new Exception("Failed to delete file: " + file.getAbsolutePath());
+                    }
                 }
             }
         }
-        directory.delete();
+        if (!directory.delete()) {
+            throw new Exception("Failed to delete directory: " + directory.getAbsolutePath());
+        }
     }
 
     private long getDirectorySize(Path path) throws Exception {

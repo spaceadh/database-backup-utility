@@ -91,6 +91,7 @@ public class StorageService {
         if (!backupDir.exists() || !backupDir.isDirectory()) {
             return new String[0];
         }
-        return backupDir.list();
+        String[] files = backupDir.list();
+        return files != null ? files : new String[0];
     }
 }

@@ -14,6 +14,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * MySQL database backup service using mysqldump
@@ -43,18 +45,23 @@ public class MySQLBackupService implements BackupService {
             String backupFilePath = config.getBackupPath() + File.separator + backupFileName;
 
             // Build mysqldump command
+            // Use environment variable for password to avoid exposing it in process list
             ProcessBuilder processBuilder = new ProcessBuilder(
                     "mysqldump",
                     "--host=" + config.getHost(),
                     "--port=" + config.getPort(),
                     "--user=" + config.getUsername(),
-                    "--password=" + config.getPassword(),
                     "--result-file=" + backupFilePath,
                     "--single-transaction",
                     "--routines",
                     "--triggers",
                     config.getDatabaseName()
             );
+
+            // Set MYSQL_PWD environment variable for password
+            Map<String, String> env = new HashMap<>(processBuilder.environment());
+            env.put("MYSQL_PWD", config.getPassword());
+            processBuilder.environment().putAll(env);
 
             processBuilder.redirectErrorStream(true);
             Process process = processBuilder.start();

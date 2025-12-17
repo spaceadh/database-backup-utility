@@ -46,14 +46,19 @@ public class BackupLogService {
      */
     public void logBackupResult(BackupConfig config, BackupResult result) {
         String status = result.isSuccess() ? "SUCCESS" : "FAILURE";
+        String backupFile = result.getBackupFilePath() != null ? result.getBackupFilePath() : "N/A";
+        long fileSize = result.getFileSizeBytes();
+        long duration = result.getDurationMillis();
+        String message = result.getMessage() != null ? result.getMessage() : "No message";
+        
         String logMessage = String.format("[%s] Backup %s - Database: %s, File: %s, Size: %d bytes, Duration: %d ms, Message: %s",
                 LocalDateTime.now().format(FORMATTER),
                 status,
                 config.getDatabaseName(),
-                result.getBackupFilePath(),
-                result.getFileSizeBytes(),
-                result.getDurationMillis(),
-                result.getMessage());
+                backupFile,
+                fileSize,
+                duration,
+                message);
 
         writeToLog(logMessage);
         if (result.isSuccess()) {
