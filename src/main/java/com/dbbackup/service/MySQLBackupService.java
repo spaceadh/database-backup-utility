@@ -5,6 +5,7 @@ import com.dbbackup.model.BackupResult;
 import com.dbbackup.model.DatabaseType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -26,6 +27,9 @@ import java.util.Map;
 public class MySQLBackupService implements BackupService {
 
     private final CompressionService compressionService;
+    
+    @Value("${backup.executables.mysqldump:mysqldump}")
+    private String mysqldumpPath;
 
     @Override
     public BackupResult backup(BackupConfig config) {
@@ -46,8 +50,11 @@ public class MySQLBackupService implements BackupService {
 
             // Build mysqldump command
             // Use environment variable for password to avoid exposing it in process list
+            String executable = (mysqldumpPath == null || mysqldumpPath.isEmpty()) ? "mysqldump" : mysqldumpPath;
+            log.debug("Using MySQL executable: {}", executable);
+            
             ProcessBuilder processBuilder = new ProcessBuilder(
-                    "mysqldump",
+                    executable,
                     "--host=" + config.getHost(),
                     "--port=" + config.getPort(),
                     "--user=" + config.getUsername(),

@@ -5,6 +5,7 @@ import com.dbbackup.model.BackupResult;
 import com.dbbackup.model.DatabaseType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -26,6 +27,9 @@ import java.util.Map;
 public class PostgreSQLBackupService implements BackupService {
 
     private final CompressionService compressionService;
+    
+    @Value("${backup.executables.pg-dump:pg_dump}")
+    private String pgDumpPath;
 
     @Override
     public BackupResult backup(BackupConfig config) {
@@ -45,8 +49,11 @@ public class PostgreSQLBackupService implements BackupService {
             String backupFilePath = config.getBackupPath() + File.separator + backupFileName;
 
             // Build pg_dump command
+            String executable = (pgDumpPath == null || pgDumpPath.isEmpty()) ? "pg_dump" : pgDumpPath;
+            log.debug("Using PostgreSQL executable: {}", executable);
+            
             ProcessBuilder processBuilder = new ProcessBuilder(
-                    "pg_dump",
+                    executable,
                     "--host=" + config.getHost(),
                     "--port=" + config.getPort(),
                     "--username=" + config.getUsername(),

@@ -36,3 +36,11 @@ backup:
   default-path: ./backups
   compression-enabled: true
   retention-days: 30
+  
+  # Database client executable paths (optional - leave empty to use PATH)
+  # Example for Windows: C:/Program Files/PostgreSQL/16/bin/pg_dump.exe
+  executables:
+    pg-dump: "C:/Program Files/PostgreSQL/14/bin/pg_dump.exe"
+    mysqldump: ""
+    mongodump: ""
+    sqlite3: ""

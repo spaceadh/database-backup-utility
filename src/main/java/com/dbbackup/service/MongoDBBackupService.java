@@ -5,6 +5,7 @@ import com.dbbackup.model.BackupResult;
 import com.dbbackup.model.DatabaseType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -24,6 +25,9 @@ import java.time.format.DateTimeFormatter;
 public class MongoDBBackupService implements BackupService {
 
     private final CompressionService compressionService;
+    
+    @Value("${backup.executables.mongodump:mongodump}")
+    private String mongodumpPath;
 
     @Override
     public BackupResult backup(BackupConfig config) {
@@ -44,8 +48,11 @@ public class MongoDBBackupService implements BackupService {
 
             // Build mongodump command with separate authentication parameters
             // This is more secure than embedding credentials in the connection string
+            String executable = (mongodumpPath == null || mongodumpPath.isEmpty()) ? "mongodump" : mongodumpPath;
+            log.debug("Using MongoDB executable: {}", executable);
+            
             ProcessBuilder processBuilder = new ProcessBuilder(
-                    "mongodump",
+                    executable,
                     "--host=" + config.getHost(),
                     "--port=" + String.valueOf(config.getPort()),
                     "--username=" + config.getUsername(),

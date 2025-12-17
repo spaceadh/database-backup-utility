@@ -1,0 +1,8 @@
+[2025-12-17 10:43:09] Starting backup - Database: d2ib354ok1q552, Type: POSTGRESQL, Host: cd34mo1pb3u614.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com
+[2025-12-17 10:43:09] Backup FAILURE - Database: d2ib354ok1q552, File: N/A, Size: 0 bytes, Duration: 31 ms, Message: PostgreSQL backup failed: Cannot run program "pg_dump": CreateProcess error=2, The system cannot find the file specified
+[2025-12-17 15:22:23] Starting backup - Database: d2ib354ok1q552, Type: POSTGRESQL, Host: cd34mo1pb3u614.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com
+[2025-12-17 15:22:23] Backup FAILURE - Database: d2ib354ok1q552, File: N/A, Size: 0 bytes, Duration: 47 ms, Message: PostgreSQL backup failed: Cannot run program "pg_dump": CreateProcess error=2, The system cannot find the file specified
+[2025-12-17 15:25:18] Starting backup - Database: d2ib354ok1q552, Type: POSTGRESQL, Host: cd34mo1pb3u614.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com
+[2025-12-17 15:25:19] Backup FAILURE - Database: d2ib354ok1q552, File: N/A, Size: 0 bytes, Duration: 58 ms, Message: PostgreSQL backup failed: Cannot run program "pg_dump": CreateProcess error=2, The system cannot find the file specified
+[2025-12-17 15:26:40] Starting backup - Database: d2ib354ok1q552, Type: POSTGRESQL, Host: cd34mo1pb3u614.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com
+[2025-12-17 15:26:40] Backup FAILURE - Database: d2ib354ok1q552, File: N/A, Size: 0 bytes, Duration: 42 ms, Message: PostgreSQL backup failed: Cannot run program "pg_dump": CreateProcess error=2, The system cannot find the file specified
