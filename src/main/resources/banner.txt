@@ -1,0 +1,15 @@
+
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║   Database Backup Utility                                 ║
+║   Version 1.0.0                                           ║
+║                                                           ║
+║   Supported Databases:                                    ║
+║   • MySQL / MariaDB                                       ║
+║   • PostgreSQL                                            ║
+║   • MongoDB                                               ║
+║   • SQLite                                                ║
+║                                                           ║
+║   Type 'help' to see available commands                   ║
+║                                                           ║
+╚═══════════════════════════════════════════════════════════╝

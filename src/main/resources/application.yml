@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: database-backup-utility
+  
+  main:
+    banner-mode: off
+    web-application-type: none
+  
+  shell:
+    interactive:
+      enabled: true
+    noninteractive:
+      enabled: false
+
+  quartz:
+    job-store-type: memory
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: BackupScheduler
+          threadPool:
+            threadCount: 5
+
+logging:
+  level:
+    com.dbbackup: INFO
+    org.springframework.shell: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+  file:
+    name: logs/backup-utility.log
+
+# Backup configuration defaults
+backup:
+  default-path: ./backups
+  compression-enabled: true
+  retention-days: 30
